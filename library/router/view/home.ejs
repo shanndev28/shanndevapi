@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="free rest api">
+    <meta name="author" content="shanndev28">
+
+    <link rel="icon" type="image/png" sizes="16x16" href="/assets/images/favicon.jpeg">
+    <title>Rest API | shanndevapi</title>
+
+    <link href="/assets/extra-libs/c3/c3.min.css" rel="stylesheet">
+    <link href="/assets/libs/chartist/dist/chartist.min.css" rel="stylesheet">
+    <link href="/assets/extra-libs/jvector/jquery-jvectormap-2.0.2.css" rel="stylesheet" />
+    <link href="/dist/css/style.min.css" rel="stylesheet">
+    <link href="/dist/css/custom.css" rel="stylesheet">
+</head>
+
+<body>
+    <div id="main-wrapper" data-theme="light" data-layout="vertical" data-navbarbg="skin6" data-sidebartype="full"
+        data-sidebar-position="fixed" data-header-position="fixed" data-boxed-layout="full">
+        <header class="topbar" data-navbarbg="skin6">
+            <nav class="navbar top-navbar navbar-expand-lg">
+                <div class="navbar-header" data-logobg="skin6">
+                    <a class="nav-toggler waves-effect waves-light d-block d-lg-none" href="javascript:void(0)">
+                        <i class="ti-menu ti-close"></i>
+                    </a>
+                    <div class="navbar-brand">
+                        <a href="/">
+                            <h1 class="text-2xl">shanndev<span class="text-danger">api</span></h1>
+                        </a>
+                    </div>
+                    <a class="topbartoggler d-block d-lg-none waves-effect waves-light" href="javascript:void(0)"
+                        data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+                        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                        <i class="ti-more"></i>
+                    </a>
+                </div>
+                <div class="navbar-collapse collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav float-left me-auto ms-3 ps-1">
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle pl-md-3 position-relative" href="javascript:void(0)"
+                                id="bell" role="button" data-bs-toggle="dropdown" aria-haspopup="true"
+                                aria-expanded="false">
+                                <span style="font-weight: 600; font-size: 1.5rem;">Dashboard</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+        </header>
+        <aside class="left-sidebar" data-sidebarbg="skin6">
+            <div class="scroll-sidebar" data-sidebarbg="skin6">
+                <nav class="sidebar-nav">
+                    <ul id="sidebarnav">
+                        <li class="sidebar-item">
+                            <a class="sidebar-link sidebar-link" href="/" aria-expanded="false">
+                                <i data-feather="home" class="feather-icon"></i>
+                                <span class="hide-menu">Home</span>
+                            </a>
+                        </li>
+                        <li class="sidebar-item">
+                            <a class="sidebar-link" aria-expanded="false" href="javascript:void(0)">
+                                <span class="hide-menu">
+                                    <i data-feather="search" class="feather-icon"></i>
+                                    Searcher
+                                </span>
+                            </a>
+                            <ul aria-expanded="false" class="collapse  first-level base-level-line">
+                                <li class="sidebar-item">
+                                    <a href="/api/searcher/dafont?query=poppins" class="sidebar-link">
+                                        <span class="hide-menu">Dafont</span>
+                                    </a>
+                                </li>
+                                <li class="sidebar-item">
+                                    <a href="/api/searcher/pinterest?query=kyoraku shinsui" class="sidebar-link">
+                                        <span class="hide-menu">Pinterest</span>
+                                    </a>
+                                </li>
+                                <li class="sidebar-item">
+                                    <a href="/api/searcher/wikipedia?query=handphone" class="sidebar-link">
+                                        <span class="hide-menu">Wikipedia</span>
+                                    </a>
+                                </li>
+                                <li class="sidebar-item">
+                                    <a href="/api/searcher/wikimedia?query=ichigo kurosaki" class="sidebar-link">
+                                        <span class="hide-menu">Wikimedia</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="sidebar-item">
+                            <a class="sidebar-link" aria-expanded="false" href="javascript:void(0)">
+                                <span class="hide-menu">
+                                    <i data-feather="download" class="feather-icon"></i>
+                                    Downloader
+                                </span>
+                            </a>
+                            <ul aria-expanded="false" class="collapse  first-level base-level-line">
+                                <li class="sidebar-item">
+                                    <a href="/api/downloader/tiktok?url=https://vt.tiktok.com/ZSLQdtGcG/"
+                                        class="sidebar-link">
+                                        <span class="hide-menu">Tiktok</span>
+                                    </a>
+                                    <a href="/api/downloader/youtube?url=https://youtu.be/LyZhulag-qg"
+                                        class="sidebar-link">
+                                        <span class="hide-menu">Youtube</span>
+                                    </a>
+                                    <a href="/api/downloader/mediafire?url=https://www.mediafire.com/file/ve2djkjd8c5ps3w/Bot+Storev1.0-noModules.zip/file"
+                                        class="sidebar-link">
+                                        <span class="hide-menu">Mediafire</span>
+                                    </a>
+                                    <a href="/api/downloader/soundcloud?url=https://soundcloud.com/agung-pranata-839330629/yang-terdalam-noah-new-version"
+                                        class="sidebar-link">
+                                        <span class="hide-menu">Soundcloud</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="sidebar-item">
+                            <a class="sidebar-link" aria-expanded="false" href="javascript:void(0)">
+                                <span class="hide-menu">
+                                    <i data-feather="file-text" class="feather-icon"></i>
+                                    Random Text
+                                </span>
+                            </a>
+                            <ul aria-expanded="false" class="collapse  first-level base-level-line">
+                                <li class="sidebar-item">
+                                    <a href="/api/random/quotes" class="sidebar-link">
+                                        <span class="hide-menu">Quotes</span>
+                                    </a>
+                                    <a href="/api/random/quotesnime" class="sidebar-link">
+                                        <span class="hide-menu">Quotes Anime</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </aside>
+        <div class="page-wrapper">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="card">
+                            <div class="card-body">
+                                <h4 class="card-title">Changelog | 3 Agustus 2023</h4>
+                                <br>
+                                <ol>
+                                    <li>Add Pinterest Search</li>
+                                    <li>Add Tiktok Download</li>
+                                    <li>Add Youtube Download</li>
+                                </ol>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <div class="card-body">
+                                <h4 class="card-title">Syarat & Ketentuan</h4>
+                                <br>
+                                <ol>
+                                    <li>Jangan spam bang</li>
+                                    <li>Owner tidak bertanggung jawab atas apa yang Anda lakukan dalam penggunaan
+                                        website ini.</li>
+                                    <li>Owner dapat sewaktu waktu mengubah ketentuan di website ini, demi menjaga
+                                        kualitas website.</li>
+                                </ol>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <div class="card-body">
+                                <h4 class="card-title">Contact Me</h4>
+                                <br>
+                                <div>
+                                    <a href="https://www.facebook.com/shanndev28/" target="_blank">
+                                        <i class="fab fa-facebook me-1"></i>
+                                        facebook
+                                    </a>
+                                </div>
+                                <div>
+                                    <a href="https://www.instagram.com/shanndev28/" target="_blank">
+                                        <i class="fab fa-instagram me-1"></i>
+                                        instagram
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <footer class="footer text-center text-muted">
+                All Rights Reserved by Freedash. Designed and Developed by
+                <a href="/">Adminmart</a>.
+            </footer>
+        </div>
+    </div>
+
+    <script src="/assets/libs/jquery/dist/jquery.min.js"></script>
+    <script src="/assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/dist/js/app-style-switcher.js"></script>
+    <script src="/dist/js/feather.min.js"></script>
+    <script src="/assets/libs/perfect-scrollbar/dist/perfect-scrollbar.jquery.min.js"></script>
+    <script src="/dist/js/sidebarmenu.js"></script>
+    <script src="/dist/js/custom.min.js"></script>
+    <script src="/assets/extra-libs/c3/d3.min.js"></script>
+    <script src="/assets/extra-libs/c3/c3.min.js"></script>
+    <script src="/assets/libs/chartist/dist/chartist.min.js"></script>
+    <script src="/assets/libs/chartist-plugin-tooltips/dist/chartist-plugin-tooltip.min.js"></script>
+    <script src="/assets/extra-libs/jvector/jquery-jvectormap-2.0.2.min.js"></script>
+    <script src="/assets/extra-libs/jvector/jquery-jvectormap-world-mill-en.js"></script>
+    <script src="/dist/js/pages/dashboards/dashboard1.min.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,86 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+
+* {
+    font-family: 'Poppins', sans-serif;
+}
+
+body,
+.page-wrapper,
+header,
+.left-sidebar,
+.navbar-header,
+.card,
+.navbar-collapse {
+    box-shadow: none !important;
+    color: rgb(255 255 255/1) !important;
+    background-color: rgb(34 40 49/1) !important;
+}
+
+.navbar-collapse {
+    border: none !important;
+}
+
+.list-divider {
+    background: rgb(255 255 255/1) !important;
+}
+
+.card .card-title,
+a,
+.feather-icon,
+.has-arrow {
+    color: rgb(255 255 255/1) !important;
+}
+
+.sidebar-nav #sidebarnav .sidebar-item.selected>.sidebar-link {
+    box-shadow: none;
+    background: rgb(248 98 98/1) !important;
+}
+
+.text-danger {
+    color: rgb(248 98 98/1) !important;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-weight: 600 !important;
+}
+
+.text-2xl {
+    margin: 0;
+    font-size: 1.5rem !important;
+    line-height: 2rem !important;
+}
+
+.card {
+    border-width: 1px !important;
+    border-radius: 0.75rem !important;
+    border-color: rgb(228 228 228/0.1) !important;
+}
+
+.left-sidebar,
+.navbar-header {
+    border-right: 1px solid rgb(255 255 255/0.1) !important;
+}
+
+.navbar-collapse {
+    border-bottom: 1px solid rgb(255 255 255/0.1) !important;
+}
+
+::-webkit-scrollbar {
+    width: 5px;
+    height: 5px;
+    background-color: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: #d6dee1;
+    border-radius: 0.75rem;
+}
+
+::-webkit-scrollbar-track {
+    display: none;
+}
