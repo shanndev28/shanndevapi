@@ -1,5 +1,5 @@
 const express = require('express')
-const { pinterest, wikimedia, dafont, wikipedia, quotes, quotesNime, youtubeDL, tiktokDL, soundcloud, mediafire } = require('@library/modules/scraper')
+const { pinterest, wikimedia, dafont, wikipedia, quotes, quotesNime, youtubeDL, tiktokDL, soundcloud, mediafire, instaDL, instaDL2 } = require('@library/modules/scraper')
 
 const router = express.Router()
 
@@ -68,6 +68,22 @@ router.get('/api/downloader/soundcloud', async (req, res) => {
 router.get('/api/downloader/mediafire', async (req, res) => {
     let url = req.query.url
     let data = await mediafire(url)
+
+    if (!url || !data || !data.status) return res.status(422).json({ status: false, creator: '@shanndev28' })
+    return res.status(200).json(data)
+})
+
+router.get('/api/downloader/instagram', async (req, res) => {
+    let url = req.query.url
+    let data = await instaDL(url)
+
+    if (!url || !data || !data.status) return res.status(422).json({ status: false, creator: '@shanndev28' })
+    return res.status(200).json(data)
+})
+
+router.get('/api/downloader/instagram2', async (req, res) => {
+    let url = req.query.url
+    let data = await instaDL2(url)
 
     if (!url || !data || !data.status) return res.status(422).json({ status: false, creator: '@shanndev28' })
     return res.status(200).json(data)

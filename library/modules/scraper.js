@@ -1,9 +1,6 @@
 const axios = require('axios')
 const cheerio = require('cheerio')
 const fetch = require('node-fetch')
-const formData = require('form-data')
-
-const form = new formData()
 
 // ========== [ SEARCHER ] ========== \\
 const pinterest = async (query) => {
@@ -178,4 +175,32 @@ const mediafire = async (url) => {
     })
 }
 
-module.exports = { pinterest, wikimedia, dafont, wikipedia, quotes, quotesNime, youtubeDL, tiktokDL, soundcloud, mediafire }
+const instaDL = async (url) => {
+    return new Promise(async (resolve, reject) => {
+        let formdata = new URLSearchParams({ url, via: 'form' })
+        await fetch('https://snapinsta.world/api/instagram', { method: 'POST', body: formdata })
+            .then(async (result) => {
+                let json = await result.json()
+
+                if (!json.success) return resolve({ status: false, creator: '@shanndev28' })
+                return resolve({ status: true, creator: '@shanndev28', result: json.data.medias })
+            })
+            .catch(() => { return resolve({ status: false, creator: '@shanndev28' }) })
+    })
+}
+
+const instaDL2 = async (url) => {
+    return new Promise(async (resolve, reject) => {
+        let formdata = { k_query: url, q_auto: 0, ajax: 1 }
+        await fetch('https://www.y2mate.com/mates/analyzeV2/ajax', { method: 'POST', headers: { accept: "*/*", 'accept-language': "en-US,en;q=0.9", 'content-type': "application/x-www-form-urlencoded; charset=UTF-8" }, body: Object.keys(formdata).map(key => `${key}=${encodeURIComponent(formdata[key])}`).join('&') })
+            .then(async (result) => {
+                let json = await result.json()
+
+                if (json.status !== 'ok') return resolve({ status: false, creator: '@shanndev28' })
+                return resolve({ status: true, creator: '@shanndev28', result: json.links.video })
+            })
+            .catch(() => { return resolve({ status: false, creator: '@shanndev28' }) })
+    })
+}
+
+module.exports = { pinterest, wikimedia, dafont, wikipedia, quotes, quotesNime, youtubeDL, tiktokDL, soundcloud, mediafire, instaDL, instaDL2 }
