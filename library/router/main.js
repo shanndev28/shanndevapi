@@ -1,5 +1,5 @@
 const express = require('express')
-const { pinterest, wikimedia, dafont, wikipedia, quotes, quotesNime, youtubeDL, tiktokDL, soundcloud, mediafire, instaDL, y2mate } = require('@library/modules/scraper')
+const { pinterest, wikimedia, dafont, wikipedia, quotes, quotesNime, youtubeDL, tiktokDL, soundcloud, mediafire, y2mate, facebook } = require('@library/modules/scraper')
 
 const router = express.Router()
 
@@ -89,12 +89,20 @@ router.get('/api/downloader/twitter', async (req, res) => {
     return res.status(200).json(data)
 })
 
+router.get('/api/downloader/facebook', async (req, res) => {
+    let url = req.query.url
+    let data = await facebook(url)
+
+    if (!url || !data || !data.status) return res.status(422).json({ status: false, creator: '@shanndev28' })
+    return res.status(200).json(data)
+})
+
 // ========== [ RANDOM TEXT ] ========== \\
 router.get('/api/random/quotes', async (req, res) => {
-    let data = await quotes()
+    let data = require('@library/db/quotes.json')
+    let quotes = data[Math.floor(Math.random() * data.length)]
 
-    if (!data || !data.status) return res.status(422).json({ status: false, creator: '@shanndev28' })
-    return res.status(200).json(data)
+    return res.status(200).json({ status: true, creator: '@shanndev28', result: { name: quotes.author, quote: quotes.quotes } })
 })
 
 router.get('/api/random/quotesnime', async (req, res) => {

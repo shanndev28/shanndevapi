@@ -1,6 +1,7 @@
 const axios = require('axios')
 const cheerio = require('cheerio')
 const fetch = require('node-fetch')
+const FormData = require('form-data')
 
 // ========== [ SEARCHER ] ========== \\
 const pinterest = async (query) => {
@@ -203,4 +204,18 @@ const y2mate = async (url) => {
     })
 }
 
-module.exports = { pinterest, wikimedia, dafont, wikipedia, quotes, quotesNime, youtubeDL, tiktokDL, soundcloud, mediafire, instaDL, y2mate }
+const facebook = async (url) => {
+    return new Promise(async (resolve, reject) => {
+        await axios.post('https://getmyfb.com/process', { id: url, locale: 'en' })
+            .then(({ data }) => {
+                let $ = cheerio.load(data)
+                let url = $('.results-list-item > a').attr('href')
+
+                if (!url) return resolve({ status: false, creator: '@shanndev28' })
+                return resolve({ status: true, creator: '@shanndev28', result: url })
+            })
+            .catch(() => { return resolve({ status: false, creator: '@shanndev28' }) })
+    })
+}
+
+module.exports = { pinterest, wikimedia, dafont, wikipedia, quotes, quotesNime, youtubeDL, tiktokDL, soundcloud, mediafire, instaDL, y2mate, facebook }
