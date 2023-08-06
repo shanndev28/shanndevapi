@@ -6,6 +6,21 @@ const router = express.Router()
 // ========== [ HOME ] ========== \\
 router.get('/', (req, res) => { res.render('home') })
 
+// ========== [ GAME ] ========== \\
+router.get('/api/game/caklontong', async (req, res) => {
+    let data = require('@library/db/caklontong.json')
+    let result = data[Math.floor(Math.random() * data.length)]
+
+    return res.status(200).json({ status: true, creator: '@shanndev28', result })
+})
+
+router.get('/api/game/family100', async (req, res) => {
+    let data = require('@library/db/family100.json')
+    let result = data[Math.floor(Math.random() * data.length)]
+
+    return res.status(200).json({ status: true, creator: '@shanndev28', result })
+})
+
 // ========== [ SEARCHER ] ========== \\
 router.get('/api/searcher/pinterest', async (req, res) => {
     let query = req.query.query

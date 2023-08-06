@@ -135,7 +135,7 @@ const tiktokDL = async (url) => {
         await axios.get('https://tikmate.cc/analyze?url=' + url)
             .then(({ data }) => {
                 if (!data || data.error) return resolve({ status: false, creator: '@shanndev28' })
-                return resolve({ status: true, creator: '@shanndev28', result: { quality: data.formats.video[0].quality, url: data.formats.video[0].url } })
+                return resolve({ status: true, creator: '@shanndev28', result: { creator: data.formats.creator, title: data.formats.title, thumbnail: data.formats.thumbnail, video: data.formats.video, audio: data.formats.audio } })
             })
             .catch(() => { return resolve({ status: false, creator: '@shanndev28' }) })
     })
@@ -167,10 +167,14 @@ const mediafire = async (url) => {
         await axios.get(url)
             .then(({ data }) => {
                 let $ = cheerio.load(data)
+                let filetype = $('.filetype').text()
                 let url = $('#downloadButton').attr('href')
+                let filename = $('.dl-btn-label').attr('title')
+                let filesize = $('ul.details > li:nth-child(1) > span').text()
+                let uploaded = $('ul.details > li:nth-child(2) > span').text()
 
                 if (!url) return resolve({ status: false, creator: '@shanndev28' })
-                return resolve({ status: true, creator: '@shanndev28', result: url })
+                return resolve({ status: true, creator: '@shanndev28', result: { filesize, filetype, uploaded, filename, url } })
             })
             .catch(() => { return resolve({ status: false, creator: '@shanndev28' }) })
     })
@@ -198,7 +202,7 @@ const y2mate = async (url) => {
                 let json = await result.json()
 
                 if (json.status !== 'ok') return resolve({ status: false, creator: '@shanndev28' })
-                return resolve({ status: true, creator: '@shanndev28', result: json.links.video })
+                return resolve({ status: true, creator: '@shanndev28', result: { title: json.title, thumbnail: json.thumbnail, video: json.links.video } })
             })
             .catch(() => { return resolve({ status: false, creator: '@shanndev28' }) })
     })
@@ -209,10 +213,12 @@ const facebook = async (url) => {
         await axios.post('https://getmyfb.com/process', { id: url, locale: 'en' })
             .then(({ data }) => {
                 let $ = cheerio.load(data)
-                let url = $('.results-list-item > a').attr('href')
+                let img = $('.results-item-image').attr('src')
+                let url = $('ul.results-list > li:nth-child(1) > a').attr('href')
+
 
                 if (!url) return resolve({ status: false, creator: '@shanndev28' })
-                return resolve({ status: true, creator: '@shanndev28', result: url })
+                return resolve({ status: true, creator: '@shanndev28', result: { img, url } })
             })
             .catch(() => { return resolve({ status: false, creator: '@shanndev28' }) })
     })
