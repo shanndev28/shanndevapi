@@ -189,7 +189,7 @@ const instaDL = async (url) => {
     })
 }
 
-const instaDL2 = async (url) => {
+const y2mate = async (url) => {
     return new Promise(async (resolve, reject) => {
         let formdata = { k_query: url, q_auto: 0, ajax: 1 }
         await fetch('https://www.y2mate.com/mates/analyzeV2/ajax', { method: 'POST', headers: { accept: "*/*", 'accept-language': "en-US,en;q=0.9", 'content-type': "application/x-www-form-urlencoded; charset=UTF-8" }, body: Object.keys(formdata).map(key => `${key}=${encodeURIComponent(formdata[key])}`).join('&') })
@@ -203,4 +203,4 @@ const instaDL2 = async (url) => {
     })
 }
 
-module.exports = { pinterest, wikimedia, dafont, wikipedia, quotes, quotesNime, youtubeDL, tiktokDL, soundcloud, mediafire, instaDL, instaDL2 }
+module.exports = { pinterest, wikimedia, dafont, wikipedia, quotes, quotesNime, youtubeDL, tiktokDL, soundcloud, mediafire, instaDL, y2mate }
