@@ -1,7 +1,7 @@
 const sharp = require('sharp')
 const axios = require('axios')
 const express = require('express')
-const { pinterest, wikimedia, dafont, wikipedia, quotesNime, removeBg, upscale, youtubeDL, tiktokDL, soundcloud, mediafire, y2mate, facebook, aiSlogan } = require('@library/modules/scraper')
+const { pinterest, wikimedia, dafont, wikipedia, quotesNime, removeBg, upscale, youtubeDL, tiktokDL, soundcloud, mediafire, y2mate, facebook, aiSlogan, aiName } = require('@library/modules/scraper')
 
 const router = express.Router()
 
@@ -225,10 +225,18 @@ router.get('/api/converter/remini', async (req, res) => {
         .catch(() => { return res.status(422).json({ status: false, creator: '@shanndev28' }) })
 })
 
-// ========== [ CONVERTER ] ========== \\
+// ========== [ AI ] ========== \\
 router.get('/api/generator/slogan', async (req, res) => {
     let query = req.query.query
     let data = await aiSlogan(query)
+
+    if (!query || !data || !data.status) return res.status(422).json({ status: false, creator: '@shanndev28' })
+    return res.status(200).json(data)
+})
+
+router.get('/api/generator/name', async (req, res) => {
+    let query = req.query.query
+    let data = await aiName(query)
 
     if (!query || !data || !data.status) return res.status(422).json({ status: false, creator: '@shanndev28' })
     return res.status(200).json(data)

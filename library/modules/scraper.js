@@ -239,7 +239,6 @@ const facebook = async (url) => {
                 let img = $('.results-item-image').attr('src')
                 let url = $('ul.results-list > li:nth-child(1) > a').attr('href')
 
-
                 if (!url) return resolve({ status: false, creator: '@shanndev28' })
                 return resolve({ status: true, creator: '@shanndev28', result: { img, url } })
             })
@@ -259,4 +258,16 @@ const aiSlogan = async (keyword) => {
     })
 }
 
-module.exports = { pinterest, wikimedia, dafont, wikipedia, quotes, quotesNime, removeBg, upscale, youtubeDL, tiktokDL, soundcloud, mediafire, instaDL, y2mate, facebook, aiSlogan }
+const aiName = async (keyword) => {
+    return new Promise(async (resolve, reject) => {
+        let keywords = keyword.split(',')
+        await axios.post('https://backend.zyro.com/v1/ai/names', { keywords })
+            .then(({ data }) => {
+                if (!data || !data.names) return resolve({ status: false, creator: '@shanndev28' })
+                return resolve({ status: true, creator: '@shanndev28', result: data.names })
+            })
+            .catch(() => { return resolve({ status: false, creator: '@shanndev28' }) })
+    })
+}
+
+module.exports = { pinterest, wikimedia, dafont, wikipedia, quotes, quotesNime, removeBg, upscale, youtubeDL, tiktokDL, soundcloud, mediafire, instaDL, y2mate, facebook, aiSlogan, aiName }
