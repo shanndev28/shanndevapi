@@ -1,3 +1,4 @@
+const sharp = require('sharp')
 const axios = require('axios')
 const express = require('express')
 const { pinterest, wikimedia, dafont, wikipedia, quotesNime, removeBg, youtubeDL, tiktokDL, soundcloud, mediafire, y2mate, facebook } = require('@library/modules/scraper')
@@ -44,6 +45,14 @@ router.get('/api/game/tebakkalimat', async (req, res) => {
 })
 
 // ========== [ SEARCHER ] ========== \\
+router.get('/api/searcher/dafont', async (req, res) => {
+    let query = req.query.query
+    let data = await dafont(query)
+
+    if (!query || !data || !data.status) return res.status(422).json({ status: false, creator: '@shanndev28' })
+    return res.status(200).json(data)
+})
+
 router.get('/api/searcher/pinterest', async (req, res) => {
     let query = req.query.query
     let data = await pinterest(query)
@@ -63,14 +72,6 @@ router.get('/api/searcher/wikimedia', async (req, res) => {
 router.get('/api/searcher/wikipedia', async (req, res) => {
     let query = req.query.query
     let data = await wikipedia(query)
-
-    if (!query || !data || !data.status) return res.status(422).json({ status: false, creator: '@shanndev28' })
-    return res.status(200).json(data)
-})
-
-router.get('/api/searcher/dafont', async (req, res) => {
-    let query = req.query.query
-    let data = await dafont(query)
 
     if (!query || !data || !data.status) return res.status(422).json({ status: false, creator: '@shanndev28' })
     return res.status(200).json(data)
@@ -150,7 +151,7 @@ router.get('/api/random/quotesnime', async (req, res) => {
 })
 
 // ========== [ CONVERTER ] ========== \\
-router.get('/api/converter/towebp', async (req, res) => {
+router.get('/api/converter/remini', async (req, res) => {
     let img = req.query.img
     if (!img) return res.status(422).json({ status: false, creator: '@shanndev28' })
 
@@ -158,9 +159,28 @@ router.get('/api/converter/towebp', async (req, res) => {
         .then(async (result) => {
             if (!/image/.test(result.headers['content-type'])) return res.status(422).json({ status: false, creator: '@shanndev28' })
 
+            await sharp(result.data).resize(5000).toBuffer()
+                .then(result => {
+                    res.set({ 'Content-Type': 'image/webp' })
+                    return res.send(result)
+                })
+                .catch(() => { return res.status(422).json({ status: false, creator: '@shanndev28' }) })
+        })
+        .catch(() => { return res.status(422).json({ status: false, creator: '@shanndev28' }) })
+})
+
+router.get('/api/converter/towebp', async (req, res) => {
+    let img = req.query.img
+    if (!img) return res.status(422).json({ status: false, creator: '@shanndev28' })
+
+    await axios.get(img, { responseType: 'arraybuffer' })
+        .then(result => {
+            if (!/image/.test(result.headers['content-type'])) return res.status(422).json({ status: false, creator: '@shanndev28' })
+
             res.set({ 'Content-Type': 'image/webp' })
             return res.send(result.data)
         })
+        .catch(() => { return res.status(422).json({ status: false, creator: '@shanndev28' }) })
 })
 
 router.get('/api/converter/topng', async (req, res) => {
@@ -168,12 +188,13 @@ router.get('/api/converter/topng', async (req, res) => {
     if (!img) return res.status(422).json({ status: false, creator: '@shanndev28' })
 
     await axios.get(img, { responseType: 'arraybuffer' })
-        .then(async (result) => {
+        .then(result => {
             if (!/image/.test(result.headers['content-type'])) return res.status(422).json({ status: false, creator: '@shanndev28' })
 
             res.set({ 'Content-Type': 'image/png' })
             return res.send(result.data)
         })
+        .catch(() => { return res.status(422).json({ status: false, creator: '@shanndev28' }) })
 })
 
 router.get('/api/converter/removebg', async (req, res) => {
