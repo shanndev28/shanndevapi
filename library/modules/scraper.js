@@ -110,6 +110,18 @@ const quotesNime = async () => {
     })
 }
 
+// ========== [ CONVERTER ] ========== \\
+const removeBg = async (image) => {
+    return new Promise(async (resolve, reject) => {
+        await axios.post('https://backend.zyro.com/v1/ai/remove-background', { image })
+            .then(({ data }) => {
+                if (!data || !data.result) return resolve({ status: false, creator: '@shanndev28' })
+                return resolve(data.result)
+            })
+            .catch(() => { return resolve({ status: false, creator: '@shanndev28' }) })
+    })
+}
+
 // ========== [ DOWNLOADER ] ========== \\
 const youtubeDL = async (url) => {
     return new Promise(async (resolve, reject) => {
@@ -224,4 +236,4 @@ const facebook = async (url) => {
     })
 }
 
-module.exports = { pinterest, wikimedia, dafont, wikipedia, quotes, quotesNime, youtubeDL, tiktokDL, soundcloud, mediafire, instaDL, y2mate, facebook }
+module.exports = { pinterest, wikimedia, dafont, wikipedia, quotes, quotesNime, removeBg, youtubeDL, tiktokDL, soundcloud, mediafire, instaDL, y2mate, facebook }
