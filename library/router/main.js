@@ -1,7 +1,7 @@
 const sharp = require('sharp')
 const axios = require('axios')
 const express = require('express')
-const { pinterest, wikimedia, dafont, wikipedia, quotesNime, removeBg, youtubeDL, tiktokDL, soundcloud, mediafire, y2mate, facebook } = require('@library/modules/scraper')
+const { pinterest, wikimedia, dafont, wikipedia, quotesNime, removeBg, upscale, youtubeDL, tiktokDL, soundcloud, mediafire, y2mate, facebook, aiSlogan } = require('@library/modules/scraper')
 
 const router = express.Router()
 
@@ -151,24 +151,6 @@ router.get('/api/random/quotesnime', async (req, res) => {
 })
 
 // ========== [ CONVERTER ] ========== \\
-router.get('/api/converter/remini', async (req, res) => {
-    let img = req.query.img
-    if (!img) return res.status(422).json({ status: false, creator: '@shanndev28' })
-
-    await axios.get(img, { responseType: 'arraybuffer' })
-        .then(async (result) => {
-            if (!/image/.test(result.headers['content-type'])) return res.status(422).json({ status: false, creator: '@shanndev28' })
-
-            await sharp(result.data).resize(5000).toBuffer()
-                .then(result => {
-                    res.set({ 'Content-Type': 'image/webp' })
-                    return res.send(result)
-                })
-                .catch(() => { return res.status(422).json({ status: false, creator: '@shanndev28' }) })
-        })
-        .catch(() => { return res.status(422).json({ status: false, creator: '@shanndev28' }) })
-})
-
 router.get('/api/converter/towebp', async (req, res) => {
     let img = req.query.img
     if (!img) return res.status(422).json({ status: false, creator: '@shanndev28' })
@@ -218,6 +200,38 @@ router.get('/api/converter/removebg', async (req, res) => {
                 .catch(() => { return res.status(422).json({ status: false, creator: '@shanndev28' }) })
         })
         .catch(() => { return res.status(422).json({ status: false, creator: '@shanndev28' }) })
+})
+
+router.get('/api/converter/remini', async (req, res) => {
+    let img = req.query.img
+    if (!img) return res.status(422).json({ status: false, creator: '@shanndev28' })
+
+    await axios.get(img, { responseType: 'arraybuffer' })
+        .then(async (result) => {
+            if (!/image/.test(result.headers['content-type'])) return res.status(422).json({ status: false, creator: '@shanndev28' })
+
+            let file = `data:${result.headers['content-type']};base64,${result.data.toString('base64')}`
+            let data = await upscale(file)
+
+            if (!data) return res.status(422).json({ status: false, creator: '@shanndev28' })
+
+            await axios.get(data, { responseType: 'arraybuffer' })
+                .then(({ data }) => {
+                    res.set({ 'Content-Type': 'image/png' })
+                    return res.send(data)
+                })
+                .catch(() => { return res.status(422).json({ status: false, creator: '@shanndev28' }) })
+        })
+        .catch(() => { return res.status(422).json({ status: false, creator: '@shanndev28' }) })
+})
+
+// ========== [ CONVERTER ] ========== \\
+router.get('/api/generator/slogan', async (req, res) => {
+    let query = req.query.query
+    let data = await aiSlogan(query)
+
+    if (!query || !data || !data.status) return res.status(422).json({ status: false, creator: '@shanndev28' })
+    return res.status(200).json(data)
 })
 
 module.exports = router

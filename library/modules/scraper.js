@@ -122,6 +122,17 @@ const removeBg = async (image) => {
     })
 }
 
+const upscale = async (image) => {
+    return new Promise(async (resolve, reject) => {
+        await axios.post('https://upscaler.zyro.com/v1/ai/image-upscaler', { image_data: image })
+            .then(({ data }) => {
+                if (!data || !data.upscaled) return resolve({ status: false, creator: '@shanndev28' })
+                return resolve(data.upscaled)
+            })
+            .catch(() => { return resolve({ status: false, creator: '@shanndev28' }) })
+    })
+}
+
 // ========== [ DOWNLOADER ] ========== \\
 const youtubeDL = async (url) => {
     return new Promise(async (resolve, reject) => {
@@ -236,4 +247,16 @@ const facebook = async (url) => {
     })
 }
 
-module.exports = { pinterest, wikimedia, dafont, wikipedia, quotes, quotesNime, removeBg, youtubeDL, tiktokDL, soundcloud, mediafire, instaDL, y2mate, facebook }
+// ========== [ ARTIFICIAL INTELLIGENCE ] ========== \\
+const aiSlogan = async (keyword) => {
+    return new Promise(async (resolve, reject) => {
+        await axios.post('https://backend.zyro.com/v1/ai/slogans', { keyword })
+            .then(({ data }) => {
+                if (!data || !data.slogans) return resolve({ status: false, creator: '@shanndev28' })
+                return resolve({ status: true, creator: '@shanndev28', result: data.slogans })
+            })
+            .catch(() => { return resolve({ status: false, creator: '@shanndev28' }) })
+    })
+}
+
+module.exports = { pinterest, wikimedia, dafont, wikipedia, quotes, quotesNime, removeBg, upscale, youtubeDL, tiktokDL, soundcloud, mediafire, instaDL, y2mate, facebook, aiSlogan }
