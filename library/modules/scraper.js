@@ -111,6 +111,17 @@ const quotesNime = async () => {
 }
 
 // ========== [ CONVERTER ] ========== \\
+const ssWeb = async ({ width, height, url }) => {
+    return new Promise(async (resolve, reject) => {
+        await axios.post('https://webscreenshot.vercel.app/api', { format: 'jpeg', full: false, isTweet: false, scale: 1, width, height, url })
+            .then(({ data }) => {
+                if (!data || !data.image) return resolve({ status: false, creator: '@shanndev28' })
+                return resolve(data.image)
+            })
+            .catch(() => { return resolve({ status: false, creator: '@shanndev28' }) })
+    })
+}
+
 const removeBg = async (image) => {
     return new Promise(async (resolve, reject) => {
         await axios.post('https://backend.zyro.com/v1/ai/remove-background', { image })
@@ -270,4 +281,4 @@ const aiName = async (keyword) => {
     })
 }
 
-module.exports = { pinterest, wikimedia, dafont, wikipedia, quotes, quotesNime, removeBg, upscale, youtubeDL, tiktokDL, soundcloud, mediafire, instaDL, y2mate, facebook, aiSlogan, aiName }
+module.exports = { pinterest, wikimedia, dafont, wikipedia, quotes, quotesNime, ssWeb, removeBg, upscale, youtubeDL, tiktokDL, soundcloud, mediafire, instaDL, y2mate, facebook, aiSlogan, aiName }

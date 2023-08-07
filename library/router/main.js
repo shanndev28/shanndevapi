@@ -1,7 +1,6 @@
-const sharp = require('sharp')
 const axios = require('axios')
 const express = require('express')
-const { pinterest, wikimedia, dafont, wikipedia, quotesNime, removeBg, upscale, youtubeDL, tiktokDL, soundcloud, mediafire, y2mate, facebook, aiSlogan, aiName } = require('@library/modules/scraper')
+const { pinterest, wikimedia, dafont, wikipedia, quotesNime, ssWeb, removeBg, upscale, youtubeDL, tiktokDL, soundcloud, mediafire, y2mate, facebook, aiSlogan, aiName } = require('@library/modules/scraper')
 
 const router = express.Router()
 
@@ -223,6 +222,17 @@ router.get('/api/converter/remini', async (req, res) => {
                 .catch(() => { return res.status(422).json({ status: false, creator: '@shanndev28' }) })
         })
         .catch(() => { return res.status(422).json({ status: false, creator: '@shanndev28' }) })
+})
+
+router.get('/api/converter/ssweb', async (req, res) => {
+    let url = req.query.url
+    let width = req.query.w
+    let height = req.query.h
+    let data = await ssWeb({ width, height, url })
+
+    if (!url || !width || !height || !data) return res.status(422).json({ status: false, creator: '@shanndev28' })
+    res.set({ 'Content-Type': 'image/jpeg' })
+    return res.send(Buffer.from(data.replace('data:image/jpeg;base64,', ''), 'base64'))
 })
 
 // ========== [ AI ] ========== \\
