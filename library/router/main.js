@@ -202,9 +202,9 @@ router.get('/api/converter/removebg', async (req, res) => {
             let file = `data:${result.headers['content-type']};base64,${result.data.toString('base64')}`
             let data = await removeBg(file)
 
-            if (!data) return res.status(422).json({ status: false, creator: '@shanndev28' })
+            if (!data || !data.status) return res.status(422).json({ status: false, creator: '@shanndev28' })
 
-            await axios.get(data, { responseType: 'arraybuffer' })
+            await axios.get(data.result, { responseType: 'arraybuffer' })
                 .then(({ data }) => {
                     res.set({ 'Content-Type': 'image/png' })
                     return res.send(data)
@@ -225,9 +225,9 @@ router.get('/api/converter/remini', async (req, res) => {
             let file = `data:${result.headers['content-type']};base64,${result.data.toString('base64')}`
             let data = await upscale(file)
 
-            if (!data) return res.status(422).json({ status: false, creator: '@shanndev28' })
+            if (!data || !data.status) return res.status(422).json({ status: false, creator: '@shanndev28' })
 
-            await axios.get(data, { responseType: 'arraybuffer' })
+            await axios.get(data.result, { responseType: 'arraybuffer' })
                 .then(({ data }) => {
                     res.set({ 'Content-Type': 'image/png' })
                     return res.send(data)
@@ -243,9 +243,9 @@ router.get('/api/converter/ssweb', async (req, res) => {
     let height = req.query.h
     let data = await ssWeb({ width, height, url })
 
-    if (!url || !width || !height || !data) return res.status(422).json({ status: false, creator: '@shanndev28' })
+    if (!url || !width || !height || !data || !data.status) return res.status(422).json({ status: false, creator: '@shanndev28' })
     res.set({ 'Content-Type': 'image/jpeg' })
-    return res.send(Buffer.from(data.replace('data:image/jpeg;base64,', ''), 'base64'))
+    return res.send(Buffer.from(data.result.replace('data:image/jpeg;base64,', ''), 'base64'))
 })
 
 // ========== [ GENERATOR ] ========== \\

@@ -145,7 +145,7 @@ const ssWeb = async ({ width, height, url }) => {
         await axios.post('https://webscreenshot.vercel.app/api', { format: 'jpeg', full: false, isTweet: false, scale: 1, width, height, url })
             .then(({ data }) => {
                 if (!data || !data.image) return resolve({ status: false, creator: '@shanndev28' })
-                return resolve(data.image)
+                return resolve({ status: true, creator: '@shanndev28', result: data.image })
             })
             .catch(() => { return resolve({ status: false, creator: '@shanndev28' }) })
     })
@@ -156,7 +156,7 @@ const removeBg = async (image) => {
         await axios.post('https://backend.zyro.com/v1/ai/remove-background', { image })
             .then(({ data }) => {
                 if (!data || !data.result) return resolve({ status: false, creator: '@shanndev28' })
-                return resolve(data.result)
+                return resolve({ status: true, creator: '@shanndev28', result: data.result })
             })
             .catch(() => { return resolve({ status: false, creator: '@shanndev28' }) })
     })
@@ -167,7 +167,7 @@ const upscale = async (image) => {
         await axios.post('https://upscaler.zyro.com/v1/ai/image-upscaler', { image_data: image })
             .then(({ data }) => {
                 if (!data || !data.upscaled) return resolve({ status: false, creator: '@shanndev28' })
-                return resolve(data.upscaled)
+                return resolve({ status: true, creator: '@shanndev28', result: data.upscaled })
             })
             .catch(() => { return resolve({ status: false, creator: '@shanndev28' }) })
     })
