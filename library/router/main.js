@@ -1,6 +1,6 @@
 const axios = require('axios')
 const express = require('express')
-const { pinterest, wikimedia, dafont, wikipedia, quotesNime, ssWeb, removeBg, upscale, youtubeDL, tiktokDL, soundcloud, mediafire, y2mate, facebook, aiSlogan, aiName } = require('@library/modules/scraper')
+const { stickerpack, pinterest, wikimedia, dafont, wikipedia, quotesNime, ssWeb, removeBg, upscale, youtubeDL, tiktokDL, soundcloud, mediafire, y2mate, facebook, aiSlogan, aiName } = require('@library/modules/scraper')
 
 const router = express.Router()
 
@@ -50,6 +50,19 @@ router.get('/api/searcher/dafont', async (req, res) => {
 
     if (!query || !data || !data.status) return res.status(422).json({ status: false, creator: '@shanndev28' })
     return res.status(200).json(data)
+})
+
+router.get('/api/searcher/stickerpack', async (req, res) => {
+    let query = req.query.query
+    let data = await stickerpack(query)
+
+    if (!query || !data || !data.status) return res.status(422).json({ status: false, creator: '@shanndev28' })
+    await axios.get(data.result[Math.floor(Math.random() * data.result.length)], { responseType: 'arraybuffer' })
+        .then(result => {
+            res.set({ 'Content-Type': 'image/webp' })
+            return res.send(result.data)
+        })
+        .catch(() => { return res.status(422).json({ status: false, creator: '@shanndev28' }) })
 })
 
 router.get('/api/searcher/pinterest', async (req, res) => {
