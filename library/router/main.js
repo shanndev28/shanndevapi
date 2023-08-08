@@ -290,6 +290,20 @@ router.get('/api/generator/holoh', async (req, res) => {
 })
 
 // ========== [ AI ] ========== \\
+router.get('/api/generator/openai', async (req, res) => {
+    let text = req.query.text
+    let { Configuration, OpenAIApi } = require('openai')
+
+    const configuration = new Configuration({ apiKey: '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' })
+    const openai = new OpenAIApi(configuration)
+
+    if (!text) return res.status(422).json({ status: false, creator: '@shanndev28' })
+    const chatCompletion = await openai.createChatCompletion({ model: 'gpt-3.5-turbo', messages: [{ role: 'user', content: text }] })
+
+    if (chatCompletion.status !== 200) return res.status(422).json({ status: false, creator: '@shanndev28' })
+    return res.status(200).json({ status: true, creator: '@shanndev28', result: chatCompletion.data.choices[0].message })
+})
+
 router.get('/api/generator/slogan', async (req, res) => {
     let query = req.query.query
     let data = await aiSlogan(query)
