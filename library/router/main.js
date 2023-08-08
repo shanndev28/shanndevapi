@@ -248,6 +248,47 @@ router.get('/api/converter/ssweb', async (req, res) => {
     return res.send(Buffer.from(data.replace('data:image/jpeg;base64,', ''), 'base64'))
 })
 
+// ========== [ GENERATOR ] ========== \\
+router.get('/api/generator/halah', async (req, res) => {
+    let text = req.query.text
+    let result = text.replace(/a|i|u|e|o/g, 'a')
+
+    if (!text) return res.status(422).json({ status: false, creator: '@shanndev28' })
+    return res.status(200).json({ status: true, creator: '@shanndev28', result })
+})
+
+router.get('/api/generator/hilih', async (req, res) => {
+    let text = req.query.text
+    let result = text.replace(/a|i|u|e|o/g, 'i')
+
+    if (!text) return res.status(422).json({ status: false, creator: '@shanndev28' })
+    return res.status(200).json({ status: true, creator: '@shanndev28', result })
+})
+
+router.get('/api/generator/huluh', async (req, res) => {
+    let text = req.query.text
+    let result = text.replace(/a|i|u|e|o/g, 'u')
+
+    if (!text) return res.status(422).json({ status: false, creator: '@shanndev28' })
+    return res.status(200).json({ status: true, creator: '@shanndev28', result })
+})
+
+router.get('/api/generator/heleh', async (req, res) => {
+    let text = req.query.text
+    let result = text.replace(/a|i|u|e|o/g, 'e')
+
+    if (!text) return res.status(422).json({ status: false, creator: '@shanndev28' })
+    return res.status(200).json({ status: true, creator: '@shanndev28', result })
+})
+
+router.get('/api/generator/holoh', async (req, res) => {
+    let text = req.query.text
+    let result = text.replace(/a|i|u|e|o/g, 'o')
+
+    if (!text) return res.status(422).json({ status: false, creator: '@shanndev28' })
+    return res.status(200).json({ status: true, creator: '@shanndev28', result })
+})
+
 // ========== [ AI ] ========== \\
 router.get('/api/generator/slogan', async (req, res) => {
     let query = req.query.query
