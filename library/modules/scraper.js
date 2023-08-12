@@ -259,12 +259,13 @@ const instaDL = async (url) => {
 
 const y2mate = async (url) => {
     return new Promise(async (resolve, reject) => {
-        let formdata = { k_query: url, q_auto: 0, ajax: 1 }
+        let formdata = { k_query: url, q_auto: 0, ajax: 1, k_page: 'instagram' }
         await fetch('https://www.y2mate.com/mates/analyzeV2/ajax', { method: 'POST', headers: { accept: "*/*", 'accept-language': "en-US,en;q=0.9", 'content-type': "application/x-www-form-urlencoded; charset=UTF-8" }, body: Object.keys(formdata).map(key => `${key}=${encodeURIComponent(formdata[key])}`).join('&') })
             .then(async (result) => {
                 let json = await result.json()
 
                 if (json.status !== 'ok') return resolve({ status: false, creator: '@shanndev28' })
+                console.log(json)
                 return resolve({ status: true, creator: '@shanndev28', result: { title: json.title, thumbnail: json.thumbnail, video: json.links.video } })
             })
             .catch(() => { return resolve({ status: false, creator: '@shanndev28' }) })
