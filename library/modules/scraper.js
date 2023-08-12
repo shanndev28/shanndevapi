@@ -265,7 +265,6 @@ const y2mate = async (url) => {
                 let json = await result.json()
 
                 if (json.status !== 'ok') return resolve({ status: false, creator: '@shanndev28' })
-                console.log(json)
                 return resolve({ status: true, creator: '@shanndev28', result: { title: json.title, thumbnail: json.thumbnail, video: json.links.video } })
             })
             .catch(() => { return resolve({ status: false, creator: '@shanndev28' }) })
