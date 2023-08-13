@@ -84,3 +84,20 @@ h6 {
 ::-webkit-scrollbar-track {
     display: none;
 }
+
+.input-group {
+    border-radius: 0.5rem !important;
+    border: 3px solid rgb(248 98 98/1) !important;
+}
+
+.input-group .form-control {
+    border: none;
+    color: #d6dee1;
+}
+
+.btn-danger {
+    border: none;
+    box-shadow: none;
+    background: rgb(248 98 98/1);
+    background-color: rgb(248 98 98/1);
+}

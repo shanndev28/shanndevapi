@@ -178,16 +178,35 @@ const youtubeDL = async (url) => {
     return new Promise(async (resolve, reject) => {
         await axios.post('https://video-downloader.optizord.com/wp-json/aio-dl/video-data/', { url, token: 'f46b50094b28d24a8dbb563979b2326e021017d334b972393b10d06c2e1f9344' })
             .then(({ data }) => {
-                let result = {}
+                let hasil = []
                 if (!data) return resolve({ status: false, creator: '@shanndev28' })
 
                 data.medias.forEach(v => {
-                    if (!v || (v.extension !== 'mp4' && !v.audioAvailable)) return
-                    result = { quality: v.quality, url: v.url }
+                    if (!v || (!v.audioAvailable)) return
+                    hasil.push({ quality: v.quality, audioAvailable: v.audioAvailable, filetype: v.extension, url: v.url })
                 })
 
-                let json = (result) ? { status: true, creator: '@shanndev28', result } : { status: false, creator: '@shanndev28' }
+                let json = (hasil.length) ? { status: true, creator: '@shanndev28', result: { title: data.title, thumbnail: data.thumbnail, media: hasil } } : { status: false, creator: '@shanndev28' }
                 return resolve(json)
+            })
+            .catch(() => { return resolve({ status: false, creator: '@shanndev28' }) })
+    })
+}
+
+const facebook = async (url) => {
+    return new Promise(async (resolve, reject) => {
+        await axios.post('https://getmyfb.com/process', { id: url, locale: 'en' })
+            .then(({ data }) => {
+                let hasil = []
+                let $ = cheerio.load(data)
+                let img = $('.results-item-image').attr('src')
+
+                $('ul.results-list > li').each((a, b) => {
+                    hasil.push($(b).find('a').attr('href'))
+                })
+
+                if (!url) return resolve({ status: false, creator: '@shanndev28' })
+                return resolve({ status: true, creator: '@shanndev28', result: { thumbnail: img, media: hasil } })
             })
             .catch(() => { return resolve({ status: false, creator: '@shanndev28' }) })
     })
@@ -266,21 +285,6 @@ const y2mate = async (url) => {
 
                 if (json.status !== 'ok') return resolve({ status: false, creator: '@shanndev28' })
                 return resolve({ status: true, creator: '@shanndev28', result: { title: json.title, thumbnail: json.thumbnail, video: json.links.video } })
-            })
-            .catch(() => { return resolve({ status: false, creator: '@shanndev28' }) })
-    })
-}
-
-const facebook = async (url) => {
-    return new Promise(async (resolve, reject) => {
-        await axios.post('https://getmyfb.com/process', { id: url, locale: 'en' })
-            .then(({ data }) => {
-                let $ = cheerio.load(data)
-                let img = $('.results-item-image').attr('src')
-                let url = $('ul.results-list > li:nth-child(1) > a').attr('href')
-
-                if (!url) return resolve({ status: false, creator: '@shanndev28' })
-                return resolve({ status: true, creator: '@shanndev28', result: { img, url } })
             })
             .catch(() => { return resolve({ status: false, creator: '@shanndev28' }) })
     })

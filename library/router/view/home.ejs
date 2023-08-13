@@ -268,49 +268,34 @@
                     <div class="col-md-12">
                         <div class="card">
                             <div class="card-body">
-                                <h4 class="card-title">Changelog | 3 Agustus 2023</h4>
-                                <br>
-                                <ol>
-                                    <li>Add Pinterest Search</li>
-                                    <li>Add Tiktok Download</li>
-                                    <li>Add Youtube Download</li>
-                                </ol>
-                            </div>
-                        </div>
-                        <div class="card">
-                            <div class="card-body">
-                                <h4 class="card-title">Syarat & Ketentuan</h4>
-                                <br>
-                                <ol>
-                                    <li>Jangan spam bang</li>
-                                    <li>Owner tidak bertanggung jawab atas apa yang Anda lakukan dalam penggunaan
-                                        website ini.</li>
-                                    <li>Owner dapat sewaktu waktu mengubah ketentuan di website ini, demi menjaga
-                                        kualitas website.</li>
-                                </ol>
-                            </div>
-                        </div>
-                        <div class="card">
-                            <div class="card-body">
-                                <h4 class="card-title">Contact Me</h4>
-                                <br>
-                                <div>
-                                    <a href="https://www.facebook.com/shanndev28/" target="_blank">
-                                        <i class="fab fa-facebook me-1"></i>
-                                        facebook
-                                    </a>
-                                </div>
-                                <div>
-                                    <a href="https://wa.me/6285781183473" target="_blank">
-                                        <i class="fab fa-whatsapp me-1"></i>
-                                        whatsapp
-                                    </a>
-                                </div>
-                                <div>
-                                    <a href="https://www.instagram.com/shanndev28/" target="_blank">
-                                        <i class="fab fa-instagram me-1"></i>
-                                        instagram
-                                    </a>
+                                <div class="row justify-content-center">
+                                    <div class="col-md-6">
+                                        <div class="text-center mb-5">
+                                            <h3>Video Downloader</h3>
+                                        </div>
+                                        <div class="input-group">
+                                            <input type="text" id="url" class="form-control" placeholder="URL Video"
+                                                autocomplete="off">
+                                            <button type="button" class="input-group-text btn btn-danger"
+                                                id="subUrl">Submit</button>
+                                        </div>
+                                        <div class="text-center">
+                                            <small style="font-size: .6rem;">By using our service you are accepting our
+                                                <a href="#" class="link-primary">
+                                                    Terms of Use
+                                                </a>
+                                            </small>
+                                        </div>
+                                        <div id="result" class="text-center mt-5">
+                                            <div id="loading"></div>
+                                            <div class="row">
+                                                <div class="col-4" id="result1"></div>
+                                                <div class="col-8">
+                                                    <div class="row" id="result2"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -334,7 +319,9 @@
         gtag('config', 'G-2PYQBB06P0');
     </script>
     <!-- Google tag (gtag.js) -->
-
+    <script src="https://code.jquery.com/jquery-3.7.0.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"></script>
+    <script src="/dist/js/shann.js"></script>
     <script src="/assets/libs/jquery/dist/jquery.min.js"></script>
     <script src="/assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="/dist/js/app-style-switcher.js"></script>
