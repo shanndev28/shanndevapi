@@ -197,16 +197,16 @@ const facebook = async (url) => {
     return new Promise(async (resolve, reject) => {
         await axios.post('https://getmyfb.com/process', { id: url, locale: 'en' })
             .then(({ data }) => {
-                let hasil = []
                 let $ = cheerio.load(data)
-                let img = $('.results-item-image').attr('src')
+                let urlHd = $('ul.results-list > li:first-child > a').attr('href')
+                let qualityHd = $('ul.results-list > li:first-child').text().replace(/\n|Download| /g, '')
 
-                $('ul.results-list > li').each((a, b) => {
-                    hasil.push($(b).find('a').attr('href'))
-                })
+                let urlSd = $('ul.results-list > li:last-child > a').attr('href')
+                let qualitySd = $('ul.results-list > li:last-child').text().replace(/\n|Download| /g, '')
 
-                if (!url) return resolve({ status: false, creator: '@shanndev28' })
-                return resolve({ status: true, creator: '@shanndev28', result: { thumbnail: img, media: hasil } })
+                let thumbnail = $('.results-item-image').attr('src')
+
+                return resolve({ status: true, creator: '@shanndev28', result: { thumbnail, hd: { quality: qualityHd, url: urlHd }, sd: { quality: qualitySd, url: urlSd } } })
             })
             .catch(() => { return resolve({ status: false, creator: '@shanndev28' }) })
     })
@@ -290,6 +290,29 @@ const y2mate = async (url) => {
     })
 }
 
+// ========== [ CHECKER ] ========== \\
+const getMole = async ({ user_id, zone_id }) => {
+    return new Promise(async (resolve, reject) => {
+        await axios.post('https://www.smile.one/merchant/mobilelegends/checkrole/', { user_id, zone_id, pid: 25, checkrole: 1 })
+            .then(({ data }) => {
+                if (!data || data.code !== 200) return resolve({ status: false, creator: '@shanndev28' })
+                return resolve({ status: true, creator: '@shanndev28', result: data.username })
+            })
+            .catch(() => { return resolve({ status: false, creator: '@shanndev28' }) })
+    })
+}
+
+const getPLN = async (id) => {
+    return new Promise(async (resolve, reject) => {
+        await axios.post('https://api.digiflazz.com/v1/transaction', { commands: 'pln-subscribe', customer_no: id })
+            .then(({ data }) => {
+                if (!data || !data.data.name) return resolve({ status: false, creator: '@shanndev28' })
+                return resolve({ status: true, creator: '@shanndev28', result: data.data })
+            })
+            .catch(() => { return resolve({ status: false, creator: '@shanndev28' }) })
+    })
+}
+
 // ========== [ ARTIFICIAL INTELLIGENCE ] ========== \\
 const aiSlogan = async (keyword) => {
     return new Promise(async (resolve, reject) => {
@@ -314,4 +337,4 @@ const aiName = async (keyword) => {
     })
 }
 
-module.exports = { stickerpack, pinterest, wikimedia, dafont, wikipedia, quotes, quotesNime, ssWeb, removeBg, upscale, youtubeDL, tiktokDL, soundcloud, mediafire, instaDL, y2mate, facebook, aiSlogan, aiName }
+module.exports = { stickerpack, pinterest, wikimedia, dafont, wikipedia, quotes, quotesNime, ssWeb, removeBg, upscale, youtubeDL, tiktokDL, soundcloud, mediafire, instaDL, y2mate, facebook, getMole, getPLN, aiSlogan, aiName }

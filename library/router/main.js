@@ -1,6 +1,6 @@
 const axios = require('axios')
 const express = require('express')
-const { stickerpack, pinterest, wikimedia, dafont, wikipedia, quotesNime, ssWeb, removeBg, upscale, youtubeDL, tiktokDL, soundcloud, mediafire, y2mate, facebook, aiSlogan, aiName } = require('@library/modules/scraper')
+const { stickerpack, pinterest, wikimedia, dafont, wikipedia, quotesNime, ssWeb, removeBg, upscale, youtubeDL, tiktokDL, soundcloud, mediafire, y2mate, facebook, getMole, getPLN, aiSlogan, aiName } = require('@library/modules/scraper')
 
 const router = express.Router()
 
@@ -287,6 +287,23 @@ router.get('/api/generator/holoh', async (req, res) => {
 
     if (!text) return res.status(422).json({ status: false, creator: '@shanndev28' })
     return res.status(200).json({ status: true, creator: '@shanndev28', result })
+})
+
+// ========== [ AI ] ========== \\
+router.get('/api/checker/mobile-legend', async (req, res) => {
+    let { id, zone } = req.query
+    let data = await getMole({ user_id: id, zone_id: zone })
+
+    if (!id || !zone || !data || !data.status) return res.status(422).json({ status: false, creator: '@shanndev28' })
+    return res.status(200).json(data)
+})
+
+router.get('/api/checker/pln-subscribe', async (req, res) => {
+    let { id } = req.query
+    let data = await getPLN(id)
+
+    if (!id || !data || !data.status) return res.status(422).json({ status: false, creator: '@shanndev28' })
+    return res.status(200).json(data)
 })
 
 // ========== [ AI ] ========== \\
