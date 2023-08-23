@@ -1,6 +1,6 @@
 const axios = require('axios')
 const express = require('express')
-const { stickerpack, pinterest, wikimedia, dafont, wikipedia, quotesNime, ssWeb, removeBg, upscale, youtubeDL, tiktokDL, soundcloud, mediafire, y2mate, facebook, getMole, getPLN, aiSlogan, aiName } = require('@library/modules/scraper')
+const { stickerpack, pinterest, wikimedia, dafont, wikipedia, quotesNime, ssWeb, removeBg, upscale, youtubeDL, tiktokDL, soundcloud, mediafire, twitter, y2mate, facebook, getMole, getPLN, aiSlogan, aiName } = require('@library/modules/scraper')
 
 const router = express.Router()
 
@@ -133,7 +133,7 @@ router.get('/api/downloader/instagram', async (req, res) => {
 
 router.get('/api/downloader/twitter', async (req, res) => {
     let url = req.query.url
-    let data = await y2mate(url)
+    let data = await twitter(url)
 
     if (!url || !data || !data.status) return res.status(422).json({ status: false, creator: '@shanndev28' })
     return res.status(200).json(data)

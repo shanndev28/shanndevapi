@@ -276,6 +276,31 @@ const instaDL = async (url) => {
     })
 }
 
+const twitter = async (url) => {
+    return new Promise(async (resolve, reject) => {
+        await axios.get('https://snaptwitter.com/')
+            .then(async ({ data }) => {
+                let $ = cheerio.load(data)
+                let token = $('input[name="token"]').val()
+
+                let formdata = new URLSearchParams({ url, token })
+                await fetch('https://snaptwitter.com/action.php', { method: 'POST', body: formdata })
+                    .then(async (result) => {
+                        let json = await result.json()
+                        let $ = cheerio.load(json.data)
+
+                        let url = $('.abuttons > a').attr('href')
+                        let thumbnail = $('.videotikmate-left > img').attr('src')
+                        let quality = $('.is-desktop-only > .abuttons > a > span').text().replace(/Download Video |(|)| /g, '')
+
+                        return resolve({ status: true, creator: '@shanndev28', result: { quality, thumbnail, url } })
+                    })
+                    .catch(() => { return resolve({ status: false, creator: '@shanndev28' }) })
+            })
+            .catch(() => { return resolve({ status: false, creator: '@shanndev28' }) })
+    })
+}
+
 const y2mate = async (url) => {
     return new Promise(async (resolve, reject) => {
         let formdata = { k_query: url, q_auto: 0, ajax: 1, k_page: 'instagram' }
@@ -337,4 +362,4 @@ const aiName = async (keyword) => {
     })
 }
 
-module.exports = { stickerpack, pinterest, wikimedia, dafont, wikipedia, quotes, quotesNime, ssWeb, removeBg, upscale, youtubeDL, tiktokDL, soundcloud, mediafire, instaDL, y2mate, facebook, getMole, getPLN, aiSlogan, aiName }
+module.exports = { stickerpack, pinterest, wikimedia, dafont, wikipedia, quotes, quotesNime, ssWeb, removeBg, upscale, youtubeDL, tiktokDL, soundcloud, mediafire, instaDL, twitter, y2mate, facebook, getMole, getPLN, aiSlogan, aiName }
