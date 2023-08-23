@@ -289,8 +289,8 @@ const twitter = async (url) => {
                         let json = await result.json()
                         let $ = cheerio.load(json.data)
 
-                        let url = $('.abuttons > a').attr('href')
                         let thumbnail = $('.videotikmate-left > img').attr('src')
+                        let url = 'https://snaptwitter.com' + $('.abuttons > a').attr('href')
                         let quality = $('.is-desktop-only > .abuttons > a > span').text().replace(/Download Video |(|)| /g, '')
 
                         return resolve({ status: true, creator: '@shanndev28', result: { quality, thumbnail, url } })
