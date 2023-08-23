@@ -59,7 +59,7 @@ router.get('/api/searcher/stickerpack', async (req, res) => {
     if (!query || !data || !data.status) return res.status(422).json({ status: false, creator: '@shanndev28' })
     await axios.get(data.result[Math.floor(Math.random() * data.result.length)], { responseType: 'arraybuffer' })
         .then(result => {
-            res.set({ 'Content-Type': 'image/webp' })
+            res.set({ 'Content-Type': result.headers['content-type'] })
             return res.send(result.data)
         })
         .catch(() => { return res.status(422).json({ status: false, creator: '@shanndev28' }) })
