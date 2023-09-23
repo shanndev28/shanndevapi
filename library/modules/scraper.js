@@ -291,7 +291,7 @@ const twitter = async (url) => {
 
                         let thumbnail = $('.videotikmate-left > img').attr('src')
                         let url = 'https://snaptwitter.com' + $('.abuttons > a').attr('href')
-                        let quality = $('.is-desktop-only > .abuttons > a > span').text().replace(/Download Video |(|)| /g, '')
+                        let quality = $('.is-desktop-only > .abuttons > a > span').text().replace(/Download Video |(|)| /g, '').split('(')[1].split('x')[0] || null
 
                         return resolve({ status: true, creator: '@shanndev28', result: { quality, thumbnail, url } })
                     })
