@@ -3,6 +3,92 @@ const cheerio = require('cheerio')
 const fetch = require('node-fetch')
 const FormData = require('form-data')
 
+// ========== [ ANIME ] ========== \\
+const character = async (name) => {
+    return new Promise(async (resolve, reject) => {
+        await axios.get('https://www.anime-planet.com/characters/all?name=' + name)
+            .then(({ data }) => {
+                let $ = cheerio.load(data)
+                let img = $('.mainEntry > img').attr('src')
+                let description = $('.pure-1 > div > p').text().trim()
+
+                return resolve({ status: true, creator: '@shanndev28', result: { img, description } })
+            })
+            .catch(() => { return resolve({ status: false, creator: '@shanndev28' }) })
+    })
+}
+
+const kiryu = async (query) => {
+    return new Promise(async (resolve, reject) => {
+        await axios.get('https://kiryuu.id/?s=' + query)
+            .then(({ data }) => {
+                let result = []
+                let $ = cheerio.load(data)
+
+                $('.listupd > div').get().map(a => {
+                    let url = $(a).find('.bs > .bsx > a').attr('href')
+                    let title = $(a).find('.bs > .bsx > a').attr('title')
+                    let thumb = $(a).find('.bs > .bsx > a > .limit > img').attr('src')
+                    let last = $(a).find('.bs > .bsx > a > .bigor > .adds > .epxs').text().trim()
+                    let rating = $(a).find('.bs > .bsx > a > .bigor > .adds > .rt > .rating > .numscore').text().trim()
+                    let status = ($(a).find('.bs > .bsx > a > .limit > span.status.Completed').text().trim()) ? $(a).find('.bs > .bsx > a > .limit > span.status.Completed').text().trim() : 'Ongoing'
+
+                    result.push({ last, rating, status, title, thumb, url })
+                })
+
+                if (!result || !result.length) return resolve({ statur: false, creator: '@shanndev28' })
+                return resolve({ status: true, creator: '@shanndev28', result })
+            })
+            .catch(() => { return resolve({ status: false, creator: '@shanndev28' }) })
+    })
+}
+
+const anime = async (query) => {
+    return new Promise(async (resolve, reject) => {
+        await axios.get('https://www.anime-planet.com/anime/all?name=' + query)
+            .then(({ data }) => {
+                let result = []
+                let $ = cheerio.load(data)
+
+                $('#siteContainer > ul.cardDeck.cardGrid > li').each((b, a) => {
+                    let url = $(a).find('a').attr('href')
+                    let title = $(a).find('h3.cardName').text().trim()
+                    let thumb = $(a).find('.card > a > .crop > img').attr('src')
+
+                    if (thumb === '/inc/img/card-load.svg') return
+                    result.push({ title, url: 'https://www.anime-planet.com' + url, thumb })
+                })
+
+                if (!result || !result.length) return resolve({ status: false, creator: '@shanndev28' })
+                return resolve({ status: true, creator: '@shanndev28', result })
+            })
+            .catch(() => { return resolve({ status: false, creator: '@shanndev28' }) })
+    })
+}
+
+const manga = async (query) => {
+    return new Promise(async (resolve, reject) => {
+        await axios.get('https://www.anime-planet.com/manga/all?name=' + query)
+            .then(({ data }) => {
+                let result = []
+                let $ = cheerio.load(data)
+
+                $('.cardDeck > li').each((a, b) => {
+                    let url = $(b).find('a').attr('href')
+                    let thumb = $(b).find('img').attr('src')
+                    let title = $(b).find('.cardName').text().trim()
+
+                    if (thumb === '/inc/img/card-load.svg') return
+                    result.push({ title, url: 'https://www.anime-planet.com' + url, thumb })
+                })
+
+                if (!result || !result.length) return resolve({ status: false, creator: '@shanndev28' })
+                return resolve({ status: true, creator: '@shanndev28', result })
+            })
+            .catch(() => { return resolve({ status: false, creator: '@shanndev28' }) })
+    })
+}
+
 // ========== [ SEARCHER ] ========== \\
 const stickerpack = async (query) => {
     return new Promise(async (resolve, reject) => {
@@ -108,6 +194,19 @@ const wikipedia = async (query) => {
 }
 
 // ========== [ RANDOM TEXT ] ========== \\
+const artinama = async (name) => {
+    return new Promise(async (resolve, reject) => {
+        await axios.get('https://www.primbon.com/arti_nama.php?nama1=' + name + '&proses=+Submit%21+')
+            .then(({ data }) => {
+                let $ = cheerio.load(data)
+                let arti = $('#body').text().split(', memiliki arti: ')[1].split('Nama:')[0].trim()
+
+                return resolve({ status: true, creator: '@shanndev28', result: arti })
+            })
+            .catch(() => { return resolve({ status: false, creator: '@shanndev28' }) })
+    })
+}
+
 const quotes = async () => {
     return new Promise(async (resolve, reject) => {
         await axios.get('https://api.quotable.io/random')
@@ -362,4 +461,4 @@ const aiName = async (keyword) => {
     })
 }
 
-module.exports = { stickerpack, pinterest, wikimedia, dafont, wikipedia, quotes, quotesNime, ssWeb, removeBg, upscale, youtubeDL, tiktokDL, soundcloud, mediafire, instaDL, twitter, y2mate, facebook, getMole, getPLN, aiSlogan, aiName }
+module.exports = { character, kiryu, anime, manga, stickerpack, pinterest, wikimedia, dafont, wikipedia, artinama, quotes, quotesNime, ssWeb, removeBg, upscale, youtubeDL, tiktokDL, soundcloud, mediafire, instaDL, twitter, y2mate, facebook, getMole, getPLN, aiSlogan, aiName }

@@ -1,12 +1,60 @@
 const fs = require('fs')
 const axios = require('axios')
 const express = require('express')
-const { stickerpack, pinterest, wikimedia, dafont, wikipedia, quotesNime, ssWeb, removeBg, upscale, youtubeDL, tiktokDL, soundcloud, mediafire, twitter, y2mate, facebook, getMole, getPLN, aiSlogan, aiName } = require('@library/modules/scraper')
+const { character, kiryu, anime, manga, stickerpack, pinterest, wikimedia, dafont, wikipedia, artinama, quotesNime, ssWeb, removeBg, upscale, youtubeDL, tiktokDL, soundcloud, mediafire, twitter, y2mate, facebook, getMole, getPLN, aiSlogan, aiName } = require('@library/modules/scraper')
 
 const router = express.Router()
 
 // ========== [ HOME ] ========== \\
 router.get('/', (req, res) => { res.render('home') })
+
+// ========== [ GAME ] ========== \\
+router.get('/api/anime/character', async (req, res) => {
+    let nama = req.query.nama
+    let data = await character(nama)
+
+    if (!nama || !data || !data.status) return res.status(422).json({ status: false, creator: '@shanndev28' })
+    return res.status(200).json(data)
+})
+
+router.get('/api/anime/kiryu', async (req, res) => {
+    let title = req.query.title
+    let data = await kiryu(title)
+
+    if (!title || !data || !data.status) return res.status(422).json({ status: false, creator: '@shanndev28' })
+    return res.status(200).json(data)
+})
+
+router.get('/api/anime/anime', async (req, res) => {
+    let query = req.query.query
+    let data = await anime(query)
+
+    if (!query || !data || !data.status) return res.status(422).json({ status: false, creator: '@shanndev28' })
+    return res.status(200).json(data)
+})
+
+router.get('/api/anime/manga', async (req, res) => {
+    let query = req.query.query
+    let data = await manga(query)
+
+    if (!query || !data || !data.status) return res.status(422).json({ status: false, creator: '@shanndev28' })
+    return res.status(200).json(data)
+})
+
+// ========== [ GAME ] ========== \\
+router.get('/api/tool/ebase64', async (req, res) => {
+    let text = req.query.text
+
+    if (!text || text.length >= 2048) return res.status(422).json({ status: false, creator: '@shanndev28' })
+    return res.status(200).json({ status: true, creator: '@shanndev28', result: Buffer.from(text).toString('base64') })
+})
+
+router.get('/api/tool/dbase64', async (req, res) => {
+    let text = req.query.text
+
+    if (!text || text.length >= 2048) return res.status(422).json({ status: false, creator: '@shanndev28' })
+    return res.status(200).json({ status: true, creator: '@shanndev28', result: Buffer.from(text, 'base64').toString('ascii') })
+})
 
 // ========== [ GAME ] ========== \\
 router.get('/api/game/caklontong', async (req, res) => {
@@ -149,6 +197,14 @@ router.get('/api/downloader/facebook', async (req, res) => {
 })
 
 // ========== [ RANDOM TEXT ] ========== \\
+router.get('/api/random/artinama', async (req, res) => {
+    let nama = req.query.nama
+    let data = await artinama(nama)
+
+    if (!nama || !data || !data.status) return res.status(422).json({ status: false, creator: '@shanndev28' })
+    return res.status(200).json(data)
+})
+
 router.get('/api/random/quotes', async (req, res) => {
     let data = require('@library/db/quotes.json')
     let quotes = data[Math.floor(Math.random() * data.length)]
