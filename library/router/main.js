@@ -1,3 +1,4 @@
+const fs = require('fs')
 const axios = require('axios')
 const express = require('express')
 const { stickerpack, pinterest, wikimedia, dafont, wikipedia, quotesNime, ssWeb, removeBg, upscale, youtubeDL, tiktokDL, soundcloud, mediafire, twitter, y2mate, facebook, getMole, getPLN, aiSlogan, aiName } = require('@library/modules/scraper')
@@ -163,30 +164,37 @@ router.get('/api/random/quotesnime', async (req, res) => {
 })
 
 // ========== [ CONVERTER ] ========== \\
-router.get('/api/converter/towebp', async (req, res) => {
-    let img = req.query.img
-    if (!img) return res.status(422).json({ status: false, creator: '@shanndev28' })
+router.get('/api/converter/tinyurl', async (req, res) => {
+    let url = req.query.url
+    if (!url) return res.status(422).json({ status: false, creator: '@shanndev28' })
 
-    await axios.get(img, { responseType: 'arraybuffer' })
-        .then(result => {
-            if (!/image/.test(result.headers['content-type'])) return res.status(422).json({ status: false, creator: '@shanndev28' })
-
-            res.set({ 'Content-Type': 'image/webp' })
-            return res.send(result.data)
+    await axios.get('https://tinyurl.com/api-create.php?url=' + url)
+        .then(({ data }) => {
+            if (!data) return res.status(422).json({ status: false, creator: '@shanndev28' })
+            return res.status(200).json({ status: true, creator: '@shanndev28', result: data })
         })
         .catch(() => { return res.status(422).json({ status: false, creator: '@shanndev28' }) })
 })
 
-router.get('/api/converter/topng', async (req, res) => {
+router.get('/api/converter/topdf', async (req, res) => {
     let img = req.query.img
-    if (!img) return res.status(422).json({ status: false, creator: '@shanndev28' })
+    let filename = req.query.filename
+    let topdf = require('image-to-pdf')
+
+    if (!img || !filename) return res.status(422).json({ status: false, creator: '@shanndev28' })
 
     await axios.get(img, { responseType: 'arraybuffer' })
-        .then(result => {
-            if (!/image/.test(result.headers['content-type'])) return res.status(422).json({ status: false, creator: '@shanndev28' })
+        .then(async ({ headers, data }) => {
+            if (!headers || !/image/.test(headers['content-type']) || !data) return res.status(422).json({ status: false, creator: '@shanndev28' })
 
-            res.set({ 'Content-Type': 'image/png' })
-            return res.send(result.data)
+            let path = 'library/upload/' + Date.now()
+            await fs.writeFileSync(path + '.jpg', data)
+
+            let pages = [path + '.jpg']
+            topdf(pages, topdf.sizes.A4).pipe(fs.createWriteStream('library/upload/' + filename + '.pdf'))
+
+            await fs.unlinkSync(path + '.jpg')
+            return res.status(200).json({ status: true, creator: '@shanndev28', result: 'https://api.shanndevapi.com/upload/' + filename + '.pdf' })
         })
         .catch(() => { return res.status(422).json({ status: false, creator: '@shanndev28' }) })
 })
